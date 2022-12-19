@@ -115,6 +115,8 @@ def clear():
     else:
         _ = os.system('clear')
 
+# TODO: #3 Change sop() to use colorama
+
 def sop(text="", colour="blue", r=False): # StdOut with ANSI colour escapes.
     output = f'\033[{colour_codes[colour]}m' + text + '\033[0m'
     if r == False:
