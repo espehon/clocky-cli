@@ -34,6 +34,9 @@ debug = False
 parser = argparse.ArgumentParser(description='Clocky: A timecard program!\n\nArguments are mutually exclusive. (Except --debug)', epilog="Try 'clocky --demo' for demonstrations.", add_help=False)
 cli = parser.add_mutually_exclusive_group()
 sys.stdout.reconfigure(encoding='utf-8')
+
+# TODO: #2 Change the colour_codes dict to colorama values
+
 colour_codes = {'red':'31',
                 'green':'32',
                 'yellow':'33',
