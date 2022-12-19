@@ -1,0 +1,133 @@
+Dependencies:
+
+
+"clocky -?" for help
+
+
+--------    <<< Change Log >>>    --------
+V 1.12.3
+    -Removed playsound (depreciated ;_;)
+
+V 1.12.2
+    -Added -m to show minutes remaining rather than hours.
+
+V 1.12.1
+    -Added the option to play sound when break ends
+        -The soundFile can be defined in __init__.py
+        -This requires playsound to be installed
+
+V 1.12.0
+    -Added a tutorial output for when Clocky is first used and/or not yet set up correctly
+
+V 1.11.2
+    -Fixed bugs in --chart and --graph that would not render output correctly
+    -Fixed an issue that prevented --chart and --graph from handling rational target hours
+        -This rounds hours so using a natural number still works best
+
+V 1.11.1
+    -Clocky now checks for needed files prior to use
+        -Errors and now handled if a file is missing
+
+V 1.11.0
+    -The __init__ file now has target_days
+        -This highlights the target day on --chart and --graph
+
+V 1.10.2
+    -Fixed the header line on --chart to scale with target_hours
+    -Added a header line to --graph and -cg
+        -The -cg version combines the header lines from --chart and --graph
+
+V 1.10.1
+    -Added code that catches editing today's entry and safely clocks out before the edit
+    -Patched a bug that resulted from the cleaning done in V 1.10.0
+
+V 1.10.0
+    -Added average and total hours to the --chart and --graph option
+        -This was added to -cg as well
+    -Minor code cleaning and spelling corrections 
+
+V 1.9.0
+    -Added --demo option
+    -Added a colored title line to --chart output that shows the color scale used for the chart
+    -Added 'Min' to the progress bar for clarity
+    -Changed the -h (--help) to -?
+        -This frees up 'h' if needed in the future
+        -The option '--help' can still be used
+
+V 1.8.1
+    -Added coloured output of -g, -c, and -cg
+    -Added briefing to first clock-in of the day
+
+V 1.8.0
+    -Added -g, -c, and -cg features
+    -Patched bug that was updating original data that was supposed to be a copy
+
+V 1.7.0
+    -Clocky now uses __init__.py for settings
+        -timecard, timelog, and default break length can be set
+    -Fixed issue where current_time does not update at the end of --break process
+
+V 1.6.1
+    -Fixed issue when trying to --edit date that currently has no entry
+
+V 1.6.0
+    -Added --break option. This will clock you out for the given number of minutes and automatically clock you back in. Clock back in early with keyboard interrupt [ctrl + c]
+
+V 1.5.0
+    -Bug clocking back in automatically has been fixed (issue with PowerShell)
+    -Added --edit option
+
+V 1.4.0
+    -Reformatted code to be more clean
+    -Removed unnecessary dependencies like colorama
+    -NOTE: There is still a bug that will auto clock you in on the 18th min of any hour
+
+V 1.3.2
+    -Fixed a bug that prevented summary function from working if clocked out
+
+V 1.3.1
+    -Fixed a bug were summary function would display incorrect hours for today's date
+
+V 1.3.0
+    -Upgraded summary function to show live hours if today is in the date range
+    -Optimized code to check for today's entry prior to processing the command
+
+V 1.2.1
+    -Fixed summary function not rounding to 1/100
+
+V 1.2.0
+    -Added functionality to summary option
+
+V 1.1.1
+    -Added functionality to log option
+
+V 1.1.0
+    -Added timelog function for record keeping (located @ ./.local/shared/clocky/timelog.txt where the working dir is <user>'s home)
+    -The last record is called to show what was the last even was
+
+V 1.0.1
+    -Entry will now be created if none exists for the current day
+
+V 1.0.0
+    -Got functions to work and are callable from __main__.py
+    -Got all core logic to work
+    -Got timecard storage to work (located @ ./.local/shared/clocky/timecard.json where the working dir is <user>'s home)
+    -Got clocky to be its own install and is now callable with the command 'clocky'
+
+V 0.2.1
+    -Able to detect if an option was called and assign either a custom or default value if it was
+    -Arguments are now mutually exclusive
+
+V 0.2.0
+    -New dependency: argparse
+        -argparse is working
+        -able to store and recall arguments
+    -Removed click dependency
+
+V 0.1.1
+    -testcli is now on path
+    -Fixed: AttributeError: module '__main__' has no attribute 'main'
+    -click not working in a useful way yet
+
+V 0.1.0
+    -testcli not on path
