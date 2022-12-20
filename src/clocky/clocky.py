@@ -8,6 +8,11 @@ import time
 import sys
 import os
 
+from colorama import Fore, init
+init(autoreset=True)
+
+
+
 
 if os.path.exists(timecard_file) == False: #Checks for timecard_file
     if timecard_file == "tutorial":
@@ -37,22 +42,22 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 # TODO: #2 Change the colour_codes dict to colorama values
 
-colour_codes = {'red':'31',
-                'green':'32',
-                'yellow':'33',
-                'blue':'34',
-                'cyan':'36',
-                'magenta':'35',
-                'white':'37',
-                'none':'0',
-                'light_red':'31;1',
-                'light_blue':'34;1',
-                'light_yellow':'33;1',
-                'light_cyan':'36;1',
-                'light_black':'30;1',
-                'light_green':'32;1',
-                'light_white':'37;1',
-                'light_magenta':'35;1'
+colour_codes = {'red': Fore.RED,
+                'green': Fore.GREEN,
+                'yellow': Fore.YELLOW,
+                'blue': Fore.BLUE,
+                'cyan': Fore.CYAN,
+                'magenta': Fore.MAGENTA,
+                'white': Fore.WHITE,
+                'none': Fore.RESET,
+                'light_red': Fore.LIGHTRED_EX,
+                'light_blue': Fore.LIGHTBLUE_EX,
+                'light_yellow': Fore.LIGHTYELLOW_EX,
+                'light_cyan': Fore.LIGHTCYAN_EX,
+                'light_black': Fore.LIGHTBLACK_EX,
+                'light_green': Fore.LIGHTGREEN_EX,
+                'light_white': Fore.LIGHTWHITE_EX,
+                'light_magenta': Fore.LIGHTMAGENTA_EX
                 }
 
 #<---------------------- Arguments ----------------------------->
