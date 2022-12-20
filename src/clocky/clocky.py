@@ -40,7 +40,6 @@ parser = argparse.ArgumentParser(description='Clocky: A timecard program!\n\nArg
 cli = parser.add_mutually_exclusive_group()
 sys.stdout.reconfigure(encoding='utf-8')
 
-# TODO: #2 Change the colour_codes dict to colorama values
 
 colour_codes = {'red': Fore.RED,
                 'green': Fore.GREEN,
@@ -120,10 +119,9 @@ def clear():
     else:
         _ = os.system('clear')
 
-# TODO: #3 Change sop() to use colorama
 
 def sop(text="", colour="blue", r=False): # StdOut with ANSI colour escapes.
-    output = f'\033[{colour_codes[colour]}m' + text + '\033[0m'
+    output = f'{colour_codes[colour]}{text}{colour_codes["none"]}'
     if r == False:
         print(output)
     else:
