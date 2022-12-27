@@ -33,6 +33,7 @@ if os.path.exists(timelog_file) == False: #Checks for timelog_file
     sys.exit(0)
 
 #<---------------------- Variables ----------------------------->
+
 with open(timecard_file, 'r') as f:
     data = json.load(f)
 with open(timelog_file, 'r') as arch:
@@ -317,7 +318,7 @@ def show_minutes():
     numHashes = int((temp_data[todays_date]['hrs'] * 60) / minPerHash) # gets hours worked and coverts to minutes then scales to fit width
     bar = '['
     for char in range(1, numHashes):
-        bar = bar + (f'\033[{colour_codes[colour_scale(char, (width))]}m' + "#" + '\033[0m')
+        bar = bar + (f'{colour_codes[colour_scale(char, (width))]}' + "#" + {colour_codes['reset']})
     bar = bar + ("-" * (width - numHashes)) + "]"
     if debug == True:
         sop("        minPerHash = " + str(minPerHash))
@@ -522,9 +523,9 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
             time.sleep(0.005)
 
     elif g == False and c == True: # -c
-        headline = "\033[30;1m-----\033[0m"
+        headline = f"{colour_codes['light_black']}-----{colour_codes['reset']}"
         for char in range(1, 51):
-            headline = headline + (f'\033[{colour_codes[colour_scale(char, (target_hours*4))]}m' + "-" + '\033[0m')
+            headline = headline + f'{colour_codes[colour_scale(char, (target_hours*4))]}-{colour_codes["reset"]}'
         print(headline)
         for day in head:
             try:
@@ -545,7 +546,7 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
     elif g == True and c == True: # -gc
         new_headline = "     "
         for ch in range(0, len(headline)):
-            new_headline = new_headline + (f'\033[{colour_codes[colour_scale(ch, (target_hours*4))]}m' + headline[ch] + '\033[0m')
+            new_headline = new_headline + (f'{colour_codes[colour_scale(ch, (target_hours*4))]}' + headline[ch] + f'{colour_codes["reset"]}')
         print(new_headline)
         for day in head:
             try:
@@ -762,7 +763,7 @@ def demo():#prints a demo
     time.sleep(0.25)
     print("┃")
     time.sleep(0.25)
-    output = "┃ Scale\033[30;1m[\033[0m"
+    output = f"┃ Scale{colour_codes['light_black']}[{colour_codes['reset']}"
     for char in range(1, 49):
         output = output + (f'\033[{colour_codes[colour_scale(char, cust_hrs)]}m' + "=" + '\033[0m')
     output = output + '\033[31m]\033[0m'
