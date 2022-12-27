@@ -92,7 +92,6 @@ cli.add_argument('--demo', dest='demo', action='store_true', help=argparse.SUPPR
 
 cli.add_argument('--edit', metavar='D', action='append', nargs='?', const='no_date', help='Edit timecard for [D]ate. (YYYY-MM-DD)')
 
-args = parser.parse_args() #Execute parse_args()
 
 #<---------------------- Functions ----------------------------->
 def set_debug(): #Sets debug flag to True for the rest of the script
@@ -775,26 +774,29 @@ def demo():#prints a demo
     time.sleep(0.25)
     print()
 
-def print_args(): #prints argparse values for --debug
-    sop("    --------Argument Values---------")
-    sop("    args.debug          " + str(args.debug))
-    sop("    args.minutes        " + str(args.minutes))
-    sop("    args.in_flag        " + str(args.in_flag))
-    sop("    args.out_flag       " + str(args.out_flag))
-    sop("    args.toggle_flag    " + str(args.toggle_flag))
-    sop("    args._break         " + str(args._break))
-    sop("    args.log            " + str(args.log))
-    sop("    args.sum            " + str(args.sum))
-    sop("    args.edit           " + str(args.edit))
-    sop("    args.chart          " + str(args.chart))
-    sop("    args.graph          " + str(args.graph))
-    sop("    args.gc             " + str(args.gc))
-    sop("    args.hist           " + str(args.hist))
-    sop("    args.demo           " + str(args.demo))
-    print()
+
 
 ################## < < <  M A I N  > > > ########################
-def clocky():
+def clocky(argv=None):
+    args = parser.parse_args(argv) #Execute parse_args()
+    def print_args(): #prints argparse values for --debug
+        sop("    --------Argument Values---------")
+        sop("    args.debug          " + str(args.debug))
+        sop("    args.minutes        " + str(args.minutes))
+        sop("    args.in_flag        " + str(args.in_flag))
+        sop("    args.out_flag       " + str(args.out_flag))
+        sop("    args.toggle_flag    " + str(args.toggle_flag))
+        sop("    args._break         " + str(args._break))
+        sop("    args.log            " + str(args.log))
+        sop("    args.sum            " + str(args.sum))
+        sop("    args.edit           " + str(args.edit))
+        sop("    args.chart          " + str(args.chart))
+        sop("    args.graph          " + str(args.graph))
+        sop("    args.gc             " + str(args.gc))
+        sop("    args.hist           " + str(args.hist))
+        sop("    args.demo           " + str(args.demo))
+        print()
+
     if args.debug == True: # --debug info
         set_debug()
         print_args()
