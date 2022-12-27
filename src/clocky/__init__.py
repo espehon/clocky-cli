@@ -1,4 +1,4 @@
-__version__ = '1.12.1'
+
 
 timecard_file = r"" # Example --> "C:/Users/User/.local/share/clocky/timecard.json"
 timelog_file = r"" # Example --> "C:/Users/User/.local/share/clocky/timelog.json"

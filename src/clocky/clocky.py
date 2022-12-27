@@ -1,18 +1,22 @@
 #<--------------------- Dependencies --------------------------->
 import argparse
-from __init__ import __version__, timecard_file, timelog_file, default_break, target_hours, target_days, include_break
+from __init__ import timecard_file, timelog_file, default_break, target_hours, target_days, include_break
 import json
 import datetime
 import copy
 import time
 import sys
 import os
+import importlib.metadata
 
 from colorama import Fore, init
 init(autoreset=True)
 
 
-
+try:
+    __version__ = f"clocky {importlib.metadata.version('clocky')}"
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "Package not installed..."
 
 if os.path.exists(timecard_file) == False: #Checks for timecard_file
     if timecard_file == "tutorial":
