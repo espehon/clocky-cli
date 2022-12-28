@@ -46,7 +46,7 @@ cli = parser.add_mutually_exclusive_group()
 sys.stdout.reconfigure(encoding='utf-8')
 
 
-colour_codes = {'red': Fore.RED,
+color_codes = {'red': Fore.RED,
                 'green': Fore.GREEN,
                 'yellow': Fore.YELLOW,
                 'blue': Fore.BLUE,
@@ -102,19 +102,19 @@ cli.add_argument('--edit', metavar='D', action='append', nargs='?', const='no_da
 def set_debug(): #Sets debug flag to True for the rest of the script
     global debug
     debug = True
-    sop("\n        < < <  D E B U G  > > >\n")
+    paint("\n        < < <  D E B U G  > > >\n")
 
 def print_vars(): #Prints variables for --debug
-    sop("    -------Function Variables-------")
-    sop("    debug             = " + str(debug))
-    sop("    timecard_file     = " + timecard_file)
-    sop("    timelog_file      = " + timelog_file)
-    sop("    todays_date       = " + todays_date)
-    sop("    current_time      = " + current_time)
+    paint("    -------Function Variables-------")
+    paint("    debug             = " + str(debug))
+    paint("    timecard_file     = " + timecard_file)
+    paint("    timelog_file      = " + timelog_file)
+    paint("    todays_date       = " + todays_date)
+    paint("    current_time      = " + current_time)
     try:
-        sop("    data[todays_date] = " + str(data[todays_date]))
+        paint("    data[todays_date] = " + str(data[todays_date]))
     except:
-        sop("    data[todays_date] = None")
+        paint("    data[todays_date] = None")
     print()
 
 def clear():
@@ -124,8 +124,8 @@ def clear():
         _ = os.system('clear')
 
 
-def sop(text="", colour="blue", r=False): # StdOut with ANSI colour escapes.
-    output = f'{colour_codes[colour]}{text}{colour_codes["none"]}'
+def paint(text="", color="blue", r=False): # colorama Fore colorizing 
+    output = f'{color_codes[color]}{text}{color_codes["none"]}'
     if r == False:
         print(output)
     else:
@@ -138,13 +138,13 @@ def today_exists(key=todays_date): #Checks if there is an entry for given date a
     else:
         output = False
     if debug == True:
-        sop("    today_exists() called and returned " + str(output))
+        paint("    today_exists() called and returned " + str(output))
     return output
 
 def create_entry(key=todays_date): #This adds the key, value pair for today (will overwrite todays value if already exists!).
     #global data
     if debug == True:
-        sop("    create_entry() called")
+        paint("    create_entry() called")
     if key not in data:
         data[key] = {"hrs": 0, "time": "None"}
     update_timecard()
@@ -166,7 +166,7 @@ def is_clocked_in(): #Checks if there is a punch in already and returns True if 
     else:
         output = True
     if debug == True:
-        sop("    is_clocked_in() called and returned " + str(output))
+        paint("    is_clocked_in() called and returned " + str(output))
     return output
 
 def progressbar(it, prefix="", sufix=""): #progressbar -->  prefix: [############################.............................] i/it
@@ -185,7 +185,7 @@ def progressbar(it, prefix="", sufix=""): #progressbar -->  prefix: [###########
 
 def clock_in(): #Replaces todays time stamp with current_time.
     if debug == True:
-        sop("    clock_in() called")
+        paint("    clock_in() called")
     if is_clocked_in() == False:
         if data[todays_date]['time'] == 'None' and data[todays_date]['hrs'] == 0.00: #Checks for first punch of the day
             first_punch = True
@@ -194,22 +194,22 @@ def clock_in(): #Replaces todays time stamp with current_time.
         data[todays_date]['time'] = current_time
         add_timestamp(current_time, "Clocked In")
         update_timecard()
-        sop("\n[" + current_time + "] You are now clocked in.", colour='light_cyan')
+        paint("\n[" + current_time + "] You are now clocked in.", color='light_cyan')
         if first_punch == True:
             if include_break == True:
                 target_time = datetime.datetime.now() + datetime.timedelta(hours=target_hours)
                 target_time = target_time.strftime("%H:%M")
-                output = sop('│ Working to ', colour='cyan', r=True) + sop(str(target_time), colour='light_magenta', r=True) + sop(' will put you at ', colour='cyan', r=True) + sop(str(target_hours), colour='light_green', r=True) + sop(' hours │', colour='cyan', r=True)
-                output = sop('┌' + ('─'*(len(output)-51)) + '┐\n', colour='cyan', r=True) + output + sop('\n└' + ('─'*(len(output)-51)) + '┘', colour='cyan', r=True)
+                output = paint('│ Working to ', color='cyan', r=True) + paint(str(target_time), color='light_magenta', r=True) + paint(' will put you at ', color='cyan', r=True) + paint(str(target_hours), color='light_green', r=True) + paint(' hours │', color='cyan', r=True)
+                output = paint('┌' + ('─'*(len(output)-51)) + '┐\n', color='cyan', r=True) + output + paint('\n└' + ('─'*(len(output)-51)) + '┘', color='cyan', r=True)
                 print(output)
             else:
                 target_time = datetime.datetime.now() + datetime.timedelta(minutes=default_break) + datetime.timedelta(hours=target_hours)
                 target_time = target_time.strftime("%H:%M")
-                output = sop('│ Working to ', colour='cyan', r=True) + sop(str(target_time), colour='light_magenta', r=True) + sop(' with a ', colour='cyan', r=True) + sop(str(default_break), colour='light_green', r=True) + sop(' minute break will put you at ', colour='cyan', r=True) + sop(str(target_hours), colour='light_green', r=True) + sop(' hours │', colour='cyan', r=True)
-                output = sop('┌' + ('─'*(len(output)-71)) + '┐\n', colour='cyan', r=True) + output + sop('\n└' + ('─'*(len(output)-71)) + '┘', colour='cyan', r=True)
+                output = paint('│ Working to ', color='cyan', r=True) + paint(str(target_time), color='light_magenta', r=True) + paint(' with a ', color='cyan', r=True) + paint(str(default_break), color='light_green', r=True) + paint(' minute break will put you at ', color='cyan', r=True) + paint(str(target_hours), color='light_green', r=True) + paint(' hours │', color='cyan', r=True)
+                output = paint('┌' + ('─'*(len(output)-71)) + '┐\n', color='cyan', r=True) + output + paint('\n└' + ('─'*(len(output)-71)) + '┘', color='cyan', r=True)
                 print(output)
     else:
-        sop("\nYou are already clocked in.", colour='light_red')
+        paint("\nYou are already clocked in.", color='light_red')
         print(last_timestamp())
 
 def get_hrs(first_T, second_T): #Finds the number of hours between 2 times (second_T chronologically after first_T).
@@ -219,12 +219,12 @@ def get_hrs(first_T, second_T): #Finds the number of hours between 2 times (seco
     H2 = T2.hour + (T2.minute / 60)
     hrs = round(H2 - H1, 2)
     if debug == True:
-        sop("    get_hrs(" + first_T + ", " + second_T + ") called and returned " + str(hrs))
+        paint("    get_hrs(" + first_T + ", " + second_T + ") called and returned " + str(hrs))
     return(hrs)
 
 def clock_out(): #Finds the difference between the last time stamp and current_time; then adds it to the hrs.
     if debug == True:
-        sop("    clock_out() called")
+        paint("    clock_out() called")
     if is_clocked_in() == True:
         #global data
         hrs = round(get_hrs(data[todays_date]['time'], current_time), 2)
@@ -232,10 +232,10 @@ def clock_out(): #Finds the difference between the last time stamp and current_t
         data[todays_date]['time'] = "None"
         add_timestamp(current_time, "Clocked Out", hrs)
         update_timecard()
-        sop("\n[" + current_time + "] You are now clocked out.", colour='light_yellow')
+        paint("\n[" + current_time + "] You are now clocked out.", color='light_yellow')
         print("You were clocked in for " + str(hrs) + " hours.")
     else:
-        sop("\nYou are not clocked in.", colour='light_red')
+        paint("\nYou are not clocked in.", color='light_red')
         print(last_timestamp())
 
 def take_break(M): #clocks out for M minutes, then clocks back in
@@ -244,7 +244,7 @@ def take_break(M): #clocks out for M minutes, then clocks back in
     msg1 = "<<< Clocked out for break >>>"
     msg2 = ("(" + str(M) + " minutes)")
     if debug == True:
-        sop("    take_break() called")
+        paint("    take_break() called")
     if is_clocked_in() == True:
         clock_out()
         try:
@@ -260,8 +260,8 @@ def take_break(M): #clocks out for M minutes, then clocks back in
             print("\n[Progress interrupted]")
             print("\n" * padding_v)
         if debug == True:
-            sop("    Updating current_time")
-        global current_time #This lets the fuction update the variable so it can be used in other functions?
+            paint("    Updating current_time")
+        global current_time #This lets the function update the variable so it can be used in other functions?
         current_time = str(datetime.datetime.now().time().strftime("%H:%M"))
         clock_in()
     else:
@@ -271,42 +271,42 @@ def take_break(M): #clocks out for M minutes, then clocks back in
 def update_timecard(): #writes the new data stored in memory to file.
     with open(timecard_file, 'w') as tc:
         if debug == True:
-            sop("    update_timecard() called")
-            sop("        data[todays_date] = " + str(data[todays_date]))
-            sop("        json.dump(data, timecard_file)")
+            paint("    update_timecard() called")
+            paint("        data[todays_date] = " + str(data[todays_date]))
+            paint("        json.dump(data, timecard_file)")
         json.dump(data, tc)
 
 def check_punch(): #Checks punch status and returns a string based on answer.
     if debug == True:
-        sop("    check_punch() called")
+        paint("    check_punch() called")
     temp_data = copy.deepcopy(data) #Clones 'data' to keep it unchanged
     if temp_data[todays_date]['time'] == "None":
         fake_hrs = 0
     else:
         fake_hrs = round(get_hrs(temp_data[todays_date]['time'], current_time), 2)
-    temp_data[todays_date]['hrs'] = temp_data[todays_date]['hrs'] + fake_hrs #Fake clocks out so today's hours can be live in case the date range covers today // bug updates data globaly
+    temp_data[todays_date]['hrs'] = temp_data[todays_date]['hrs'] + fake_hrs #Fake clocks out so today's hours can be live in case the date range covers today // bug updates data globally
     hrs_remain = round(target_hours - temp_data[todays_date]['hrs'], 2)
     if hrs_remain > 0:
         if hrs_remain < 1:
-            hrs_remain = "    " + str(round(hrs_remain * 60, 1)) + sop(text = " Minutes Remaining", colour = "cyan", r = True)
+            hrs_remain = "    " + str(round(hrs_remain * 60, 1)) + paint(text = " Minutes Remaining", color = "cyan", r = True)
         else:
             hrs_remain = "    " + str(hrs_remain) + " Hours Remaining"
     else:
         hrs_remain = "    " + str(abs(hrs_remain)) + " Hours Over"
     if is_clocked_in() == True:
         hrs_ago = str(round(get_hrs(temp_data[todays_date]['time'], current_time), 2))
-        print(sop("\nYou clocked in " + hrs_ago + " hours ago.    ", colour="light_blue", r=True) + sop("[Total: " + str(round(temp_data[todays_date]['hrs'], 2)) + "]", colour=colour_scale(temp_data[todays_date]['hrs']), r=True) + hrs_remain)
+        print(paint("\nYou clocked in " + hrs_ago + " hours ago.    ", color="light_blue", r=True) + paint("[Total: " + str(round(temp_data[todays_date]['hrs'], 2)) + "]", color=colour_scale(temp_data[todays_date]['hrs']), r=True) + hrs_remain)
         print("Last entry: " + last_timestamp())
         #print("Last entry: " + last_timestamp())
     else:
         #sop("\nYou are not clocked in.    [Total: " + str(round(temp_data[todays_date]['hrs'], 2)) + "]    Last punch: " + last_timestamp(), colour='yellow')
-        print(sop("\nYou are not clocked in.    ", colour="yellow", r=True) + sop("[Total: " + str(round(temp_data[todays_date]['hrs'], 2)) + "]", colour=colour_scale(temp_data[todays_date]['hrs']), r=True) + hrs_remain)
+        print(paint("\nYou are not clocked in.    ", color="yellow", r=True) + paint("[Total: " + str(round(temp_data[todays_date]['hrs'], 2)) + "]", color=colour_scale(temp_data[todays_date]['hrs']), r=True) + hrs_remain)
         print("Last entry: " + last_timestamp())
         #print("Last punch: " + last_timestamp())
 
 def show_minutes():
     if debug == True:
-        sop("    show_minutes() called")
+        paint("    show_minutes() called")
     width = 96
     minPerHash = int((target_hours * 60) / width) # minutes per hash (how many minutes does one hash represent)
     temp_data = copy.deepcopy(data) #Clones 'data' to keep it unchanged
@@ -318,12 +318,12 @@ def show_minutes():
     numHashes = int((temp_data[todays_date]['hrs'] * 60) / minPerHash) # gets hours worked and coverts to minutes then scales to fit width
     bar = '['
     for char in range(1, numHashes):
-        bar = bar + (f'{colour_codes[colour_scale(char, (width))]}' + "#" + {colour_codes['reset']})
+        bar = bar + (f'{color_codes[colour_scale(char, (width))]}' + "#" + {color_codes['reset']})
     bar = bar + ("-" * (width - numHashes)) + "]"
     if debug == True:
-        sop("        minPerHash = " + str(minPerHash))
-        sop("        numHashes = " + str(numHashes))
-        sop("        numHashes / " + str(width) + "(width)  = " + str(round(numHashes / width, 2)))
+        paint("        minPerHash = " + str(minPerHash))
+        paint("        numHashes = " + str(numHashes))
+        paint("        numHashes / " + str(width) + "(width)  = " + str(round(numHashes / width, 2)))
 
     print(bar)
 
@@ -331,7 +331,7 @@ def show_minutes():
 
 def add_timestamp(time, event, hrs=None): #adds the current event to timelog_file.
     if debug == True:
-        sop("    add_timestamp() called")
+        paint("    add_timestamp() called")
     part1 = "[" + str(todays_date) + " " + str(time) + "]"
     if len(part1) < 24:
         part1 += " " * (24 - len(part1))
@@ -346,10 +346,10 @@ def add_timestamp(time, event, hrs=None): #adds the current event to timelog_fil
         part3 += " " * (24 - len(part3))
     new_line = part1 + part2 + part3 + "\n"
     if debug == True:
-        sop("        new_line = " + new_line.strip('\n'))
+        paint("        new_line = " + new_line.strip('\n'))
     with open(timelog_file, 'a') as arch:
         if debug == True:
-            sop("        arch.write(new_line)")
+            paint("        arch.write(new_line)")
         arch.writelines(new_line)
 
 def last_timestamp(): #Returns the last line from timelog_file.
@@ -386,7 +386,7 @@ def chart(render_date, sym='='):
 
 def graph(render_date): # render_date <string> Prints 'Mon |----------■■■■■■■■■■■■■■--■■■■■■■■■■■■■■■-------------------|' for given date
     if debug == True:
-        sop("    graph() called")
+        paint("    graph() called")
     edit_flag = False #Used to let user know that day was modified
     log = []
     for line in whole_log:
@@ -440,8 +440,8 @@ def graph(render_date): # render_date <string> Prints 'Mon |----------■■■�
     if edit_flag == True:
         output = output + "    [Edited]"
     if debug == True:
-        sop("    log_dict = " + str(log_dict))
-        sop("    edit_flag = " + str(edit_flag))
+        paint("    log_dict = " + str(log_dict))
+        paint("    edit_flag = " + str(edit_flag))
     return output
 
 def get_sunday(): #Simply returns the date object of last Sunday
@@ -449,7 +449,7 @@ def get_sunday(): #Simply returns the date object of last Sunday
     offset = (today.weekday() + 1) % 7
     last_sunday = today - datetime.timedelta(days=offset)
     if debug == True:
-        sop("    get_sunday() called and returned " + last_sunday.strftime('%Y-%m-%d'))
+        paint("    get_sunday() called and returned " + last_sunday.strftime('%Y-%m-%d'))
     return last_sunday
 
 def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs and/or charts
@@ -484,36 +484,36 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
                 hrs_list.append(data_temp[str(starting_date - offset)]['hrs'])
             except:
                 colour = 'light_black'
-            sop(day + graph(str(starting_date - offset)), colour)
+            paint(day + graph(str(starting_date - offset)), colour)
             offset = datetime.timedelta(days = (7 * weeks_ago) - count)
             count += 1
             time.sleep(0.02)
         average = sum(hrs_list)/len(hrs_list)
-        print((" "*41) + "\u001b[7m" + sop("[Average : " + str(round(average, 2)) + "]", colour=colour_scale(average), r=True) + "\u001b[0m")
+        print((" "*41) + "\u001b[7m" + paint("[Average : " + str(round(average, 2)) + "]", color=colour_scale(average), r=True) + "\u001b[0m")
         blocks = round(sum(hrs_list)*4)
         output = "\r" + (" "*(48-(int(rounded_target_hours*4))))
         day_count = 1
-        carage = 0
+        carriage = 0
         print()
         for block in range(1, (blocks + 1)):
-            output = output + sop(" ■", colour=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+            output = output + paint(" ■", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
             if block == blocks:
-                output = output + sop(" [Total : " + str(round(sum(hrs_list), 2)) + "]", colour=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+                output = output + paint(" [Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
                 sys.stdout.write(output)
                 sys.stdout.flush()
                 print("\n")
                 break
-            carage += 1
-            if carage == (int(rounded_target_hours*4)):
+            carriage += 1
+            if carriage == (int(rounded_target_hours*4)):
                 str_day_count = str(day_count)
                 if day_count == target_days:
-                    str_day_count = sop(str_day_count, colour="light_magenta", r=True)
+                    str_day_count = paint(str_day_count, color="light_magenta", r=True)
                 if day_count == 1:
                     output = output + "  " + str(str_day_count) + " (" + str(rounded_target_hours) + " Hr Days)\n"
                 else:
                     output = output + "  " + str(str_day_count) + "\n"
                 day_count += 1
-                carage = 0
+                carriage = 0
                 sys.stdout.write(output)
                 sys.stdout.flush()
                 output = "\r" + (" "*(48-(int(rounded_target_hours*4))))
@@ -523,9 +523,9 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
             time.sleep(0.005)
 
     elif g == False and c == True: # -c
-        headline = f"{colour_codes['light_black']}-----{colour_codes['reset']}"
+        headline = f"{color_codes['light_black']}-----{color_codes['reset']}"
         for char in range(1, 51):
-            headline = headline + f'{colour_codes[colour_scale(char, (target_hours*4))]}-{colour_codes["reset"]}'
+            headline = headline + f'{color_codes[colour_scale(char, (target_hours*4))]}-{color_codes["reset"]}'
         print(headline)
         for day in head:
             try:
@@ -533,20 +533,20 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
                 hrs_list.append(data_temp[str(starting_date - offset)]['hrs'])
             except:
                 colour = 'light_black'
-            sop(day + chart(str(starting_date - offset)), colour)
+            paint(day + chart(str(starting_date - offset)), colour)
             offset = datetime.timedelta(days = (7 * weeks_ago) - count)
             count += 1
             time.sleep(0.01)
         print()
         average = sum(hrs_list)/len(hrs_list)
-        sop("Avg [" + "#"*round(average*4) + "]    " + str(round(average, 2)) + " Hours", colour=colour_scale(average))
-        print("\u001b[7m" + sop("[Total : " + str(round(sum(hrs_list), 2)) + "]", colour=colour_scale(sum(hrs_list), custom=(target_hours*5)), r=True) + "\u001b[0m")
+        paint("Avg [" + "#"*round(average*4) + "]    " + str(round(average, 2)) + " Hours", color=colour_scale(average))
+        print("\u001b[7m" + paint("[Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(sum(hrs_list), custom=(target_hours*5)), r=True) + "\u001b[0m")
         print()
 
     elif g == True and c == True: # -gc
         new_headline = "     "
         for ch in range(0, len(headline)):
-            new_headline = new_headline + (f'{colour_codes[colour_scale(ch, (target_hours*4))]}' + headline[ch] + f'{colour_codes["reset"]}')
+            new_headline = new_headline + (f'{color_codes[colour_scale(ch, (target_hours*4))]}' + headline[ch] + f'{color_codes["reset"]}')
         print(new_headline)
         for day in head:
             try:
@@ -554,42 +554,42 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
                 hrs_list.append(data_temp[str(starting_date - offset)]['hrs'])
             except:
                 colour = 'light_black'
-            sop(day + graph(str(starting_date - offset)), colour)
-            sop("    " + chart(str(starting_date - offset)), colour)
+            paint(day + graph(str(starting_date - offset)), colour)
+            paint("    " + chart(str(starting_date - offset)), colour)
             print()
             offset = datetime.timedelta(days = (7 * weeks_ago) - count)
             count += 1
             time.sleep(0.02)
         average = sum(hrs_list)/len(hrs_list)
-        sop("Avg [" + "#"*round(average*4) + "]    " + str(round(average, 2)) + " Hours", colour=colour_scale(average))
+        paint("Avg [" + "#"*round(average*4) + "]    " + str(round(average, 2)) + " Hours", color=colour_scale(average))
         blocks = round(sum(hrs_list)*4)
         day_count = 1
         output = "\r "
-        carage = 0
+        carriage = 0
         line_1 = True
-        carage_limit = (int(96/(rounded_target_hours*4))*rounded_target_hours*4)
+        carriage_limit = (int(96/(rounded_target_hours*4))*rounded_target_hours*4)
         for block in range(1, (blocks + 1)):
-            output = output + sop("■", colour=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+            output = output + paint("■", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
             if block == blocks:
-                output = output + sop(" [Total : " + str(round(sum(hrs_list), 2)) + " Hrs]", colour=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+                output = output + paint(" [Total : " + str(round(sum(hrs_list), 2)) + " Hrs]", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
                 sys.stdout.write(output)
                 sys.stdout.flush()
                 print()
                 break
-            carage += 1
-            if carage % (rounded_target_hours*4) == 0:
+            carriage += 1
+            if carriage % (rounded_target_hours*4) == 0:
                 str_day_count = str(day_count)
                 if day_count == target_days:
-                    str_day_count = sop(str_day_count, colour="light_magenta", r=True)
+                    str_day_count = paint(str_day_count, color="light_magenta", r=True)
                 output = output + ":" + str(str_day_count) + " "
                 day_count += 1
-            if carage == (carage_limit):
+            if carriage == carriage_limit:
                 if line_1 == True:
                     output = output + "(" + str(rounded_target_hours) + " Hr Days)\n"
                     line_1 = False
                 else:
                     output = output + "\n"
-                carage = 0
+                carriage = 0
                 sys.stdout.write(output)
                 sys.stdout.flush()
                 output = "\r "
@@ -686,7 +686,7 @@ def edit_entry(key, new_hrs): # key = [D]ate (YYYY-MM-DD), new_hrs = float(input
     if today_exists(key) == False:
         create_entry(key)
     if debug == True:
-        sop("    edit_entry(" + str(key) + ", " + str(new_hrs) + ") called")
+        paint("    edit_entry(" + str(key) + ", " + str(new_hrs) + ") called")
     old_hrs = round(data[key]['hrs'], 2)
     new_hrs = round(new_hrs, 2)
     data[key]['hrs'] = new_hrs
@@ -699,9 +699,9 @@ def demo():#prints a demo
     print('┎─────────────────────────────── clocky [--in | --out ] ────────────────────────────────\n┃')
     time.sleep(0.25)
     if (int(current_time[-1]) % 2) == 0:
-        print( "┃" + sop("[" + current_time + "] You are now clocked in.", colour='light_cyan', r=True) + " (Example only)")
+        print( "┃" + paint("[" + current_time + "] You are now clocked in.", color='light_cyan', r=True) + " (Example only)")
     else:
-        print("┃" + sop("[" + current_time + "] You are now clocked out.", colour='light_yellow', r=True) + " (Example only)")
+        print("┃" + paint("[" + current_time + "] You are now clocked out.", color='light_yellow', r=True) + " (Example only)")
     time.sleep(0.25)
     print("┃" + (" "*3) + '↑' + (" "*24) + '↑')
     time.sleep(0.25)
@@ -723,7 +723,7 @@ def demo():#prints a demo
     time.sleep(0.25)
     print("┃")
     time.sleep(0.25)
-    print("┃ " + sop("[Clocked out]", colour='light_yellow', r=True) + " (Example only)")
+    print("┃ " + paint("[Clocked out]", color='light_yellow', r=True) + " (Example only)")
     time.sleep(0.25)
     print("┃")
     try:
@@ -733,7 +733,7 @@ def demo():#prints a demo
         print("\n┃ [Progress interrupted]")
     print("┃")
     time.sleep(0.25)
-    print("┃ " + sop("[Clocked in]", colour='light_cyan', r=True) + " (Example only)")
+    print("┃ " + paint("[Clocked in]", color='light_cyan', r=True) + " (Example only)")
     time.sleep(0.25)
     print("┃")
     time.sleep(0.25)
@@ -747,31 +747,31 @@ def demo():#prints a demo
     if chars == 0:
         chars = 10
     chars = chars + 18
-    print("┃ Day 1" + sop('[' + ("="*(chars-1)) + ']', colour=colour_scale(chars, cust_hrs), r=True))
+    print("┃ Day 1" + paint('[' + ("="*(chars-1)) + ']', color=colour_scale(chars, cust_hrs), r=True))
     time.sleep(0.25)
     chars = int(current_time[-2])
     if chars == 0:
         chars = 10
     chars = chars + 38
-    print("┃ Day 2" + sop('[' + ("="*(chars-1)) + ']', colour=colour_scale(chars, cust_hrs), r=True))
+    print("┃ Day 2" + paint('[' + ("="*(chars-1)) + ']', color=colour_scale(chars, cust_hrs), r=True))
     time.sleep(0.25)
     chars = int(current_time[-4])
     if chars == 0:
         chars = 10
     chars = chars + 28
-    print("┃ Day 3" + sop('[' + ("="*(chars-1)) + ']', colour=colour_scale(chars, cust_hrs), r=True))
+    print("┃ Day 3" + paint('[' + ("="*(chars-1)) + ']', color=colour_scale(chars, cust_hrs), r=True))
     time.sleep(0.25)
     print("┃")
     time.sleep(0.25)
-    output = f"┃ Scale{colour_codes['light_black']}[{colour_codes['reset']}"
+    output = f"┃ Scale{color_codes['light_black']}[{color_codes['reset']}"
     for char in range(1, 49):
-        output = output + (f'\033[{colour_codes[colour_scale(char, cust_hrs)]}m' + "=" + '\033[0m')
-    output = output + '\033[31m]\033[0m'
+        output = output + (f'{color_codes[colour_scale(char, cust_hrs)]}' + "=" + f'{color_codes["reset"]}')
+    output = output + f'{color_codes["red"]}]{color_codes["reset"]}'
     print(output)
     time.sleep(0.25)
-    print("┃" + " "*38 + sop("↑", colour="light_green", r=True))
+    print("┃" + " "*38 + paint("↑", color="light_green", r=True))
     time.sleep(0.25)
-    print("┃" + " "*36 + sop("Target", colour="light_green", r=True))
+    print("┃" + " "*36 + paint("Target", color="light_green", r=True))
     time.sleep(0.25)
     print("\n")
     time.sleep(0.25)
@@ -785,52 +785,52 @@ def demo():#prints a demo
 def clocky(argv=None):
     args = parser.parse_args(argv) #Execute parse_args()
     def print_args(): #prints argparse values for --debug
-        sop("    --------Argument Values---------")
-        sop("    args.debug          " + str(args.debug))
-        sop("    args.minutes        " + str(args.minutes))
-        sop("    args.in_flag        " + str(args.in_flag))
-        sop("    args.out_flag       " + str(args.out_flag))
-        sop("    args.toggle_flag    " + str(args.toggle_flag))
-        sop("    args._break         " + str(args._break))
-        sop("    args.log            " + str(args.log))
-        sop("    args.sum            " + str(args.sum))
-        sop("    args.edit           " + str(args.edit))
-        sop("    args.chart          " + str(args.chart))
-        sop("    args.graph          " + str(args.graph))
-        sop("    args.gc             " + str(args.gc))
-        sop("    args.hist           " + str(args.hist))
-        sop("    args.demo           " + str(args.demo))
+        paint("    --------Argument Values---------")
+        paint("    args.debug          " + str(args.debug))
+        paint("    args.minutes        " + str(args.minutes))
+        paint("    args.in_flag        " + str(args.in_flag))
+        paint("    args.out_flag       " + str(args.out_flag))
+        paint("    args.toggle_flag    " + str(args.toggle_flag))
+        paint("    args._break         " + str(args._break))
+        paint("    args.log            " + str(args.log))
+        paint("    args.sum            " + str(args.sum))
+        paint("    args.edit           " + str(args.edit))
+        paint("    args.chart          " + str(args.chart))
+        paint("    args.graph          " + str(args.graph))
+        paint("    args.gc             " + str(args.gc))
+        paint("    args.hist           " + str(args.hist))
+        paint("    args.demo           " + str(args.demo))
         print()
 
     if args.debug == True: # --debug info
         set_debug()
         print_args()
         print_vars()
-        sop("    -----------Main Logic-----------")
+        paint("    -----------Main Logic-----------")
 
     if args.debug == True:
-        sop("    Checking if entry for today exists...")
+        paint("    Checking if entry for today exists...")
     if today_exists() == False: #Add today's entry if none
         create_entry()
     
     if args.minutes == True: #clocky -m
         if args.debug == True:
-            sop("\n    Argument -m passed...")
+            paint("\n    Argument -m passed...")
         show_minutes()
 
     elif args.in_flag == True: #clocky -i
         if args.debug == True:
-            sop("\n    Argument --in passed...")
+            paint("\n    Argument --in passed...")
         clock_in()
 
     elif args.out_flag == True: #clocky -o
         if args.debug == True:
-            sop("\n    Argument --out passed...")
+            paint("\n    Argument --out passed...")
         clock_out()
 
     elif args.toggle_flag == True: #clocky -t
         if args.debug == True:
-            sop("\n    Argument --toggle passed...")
+            paint("\n    Argument --toggle passed...")
         if is_clocked_in() == True:
             clock_out()
         else:
@@ -838,32 +838,32 @@ def clocky(argv=None):
 
     elif args._break != None: #clocky -b [M]
         if args.debug == True:
-            sop("\n    Argument --break passed...")
+            paint("\n    Argument --break passed...")
         take_break(args._break[0])
 
     elif args.log != None: #clocky -l [N]
         if args.debug == True:
-            sop("\n    Argument --log passed...")
+            paint("\n    Argument --log passed...")
         print_timelog(args.log[0])
 
     elif args.sum != None: #clocky -s [N]
         if args.debug == True:
-            sop("\n    Argument --sum passed...")
+            paint("\n    Argument --sum passed...")
         print_summary(args.sum[0])
 
     elif args.graph != None: #clocky -g [N]
         if args.debug == True:
-            sop("\n    Argument --graph passed...")
+            paint("\n    Argument --graph passed...")
         plot(args.graph[0], g=True)
 
     elif args.chart != None: #clocky -c [N]
         if args.debug == True:
-            sop("\n    Argument --chart passed...")
+            paint("\n    Argument --chart passed...")
         plot(args.chart[0], c=True)
 
     elif args.gc != None: #clocky -gc [N]
         if args.debug == True:
-            sop("\n    Argument -gc passed...")
+            paint("\n    Argument -gc passed...")
         plot(args.gc[0], g=True, c=True)
 
     elif args.edit != None: #clocky -e [D]
@@ -872,25 +872,25 @@ def clocky(argv=None):
             pass
         else:
             if debug == True:
-                sop("    " + edit_date + " == " + todays_date + "?")
-                sop("        " + str(edit_date == todays_date))
+                paint("    " + edit_date + " == " + todays_date + "?")
+                paint("        " + str(edit_date == todays_date))
             if edit_date == todays_date: #Catch editing today's entry
                 if is_clocked_in() == True:
                     clock_out() #just to be safe
-                    sop("You were clocked out in order to edit today's entry.", colour='light_yellow')
+                    paint("You were clocked out in order to edit today's entry.", color='light_yellow')
             new_hrs = float(input("Enter hours for " + edit_date + " : "))
             edit_entry(edit_date, new_hrs)
             if edit_date == todays_date:
                 time.sleep(2) #Helps get the users attention
-                sop("\nToday's entry as been modified. Clock in to continue logging time for today\n", colour='light_magenta')
+                paint("\nToday's entry as been modified. Clock in to continue logging time for today\n", color='light_magenta')
     
     elif args.demo == True:
         demo()
 
     else: #clocky [default]
         if args.debug == True:
-            sop("\n    No argument passed...")
+            paint("\n    No argument passed...")
         check_punch()
 
     if args.debug == True: # --debug info
-        sop("    ----------End of File-----------")
+        paint("    ----------End of File-----------")
