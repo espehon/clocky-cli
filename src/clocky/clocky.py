@@ -489,7 +489,7 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
             count += 1
             time.sleep(0.02)
         average = sum(hrs_list)/len(hrs_list)
-        print((" "*41) + "\u001b[7m" + paint("[Average : " + str(round(average, 2)) + "]", color=colour_scale(average), r=True) + "\u001b[0m")
+        paint("[Average : " + str(round(average, 2)) + "]", color=colour_scale(average), r=True)
         blocks = round(sum(hrs_list)*4)
         output = "\r" + (" "*(48-(int(rounded_target_hours*4))))
         day_count = 1
@@ -540,7 +540,7 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
         print()
         average = sum(hrs_list)/len(hrs_list)
         paint("Avg [" + "#"*round(average*4) + "]    " + str(round(average, 2)) + " Hours", color=colour_scale(average))
-        print("\u001b[7m" + paint("[Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(sum(hrs_list), custom=(target_hours*5)), r=True) + "\u001b[0m")
+        paint("[Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(sum(hrs_list), custom=(target_hours*5)), r=True)
         print()
 
     elif g == True and c == True: # -gc
