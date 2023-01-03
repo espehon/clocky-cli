@@ -34,6 +34,23 @@ if os.path.exists(timelog_file) == False: #Checks for timelog_file
 
 #<---------------------- Variables ----------------------------->
 
+if os.path.exists("$HOME/.config/clocky/clocky.json") == False:
+    default_configs = {
+        "timecard": "$HOME/.local/share/clocky/timecard.json",
+        "timelog": "$HOME/.local/share/clocky/timelog.json",
+        "include_break": False,
+        "default_break": 30,
+        "target_hours": 8,
+        "target_days": 5
+    }
+    json_object = json.dumps(default_configs, indent=4)
+    with open("$HOME/.config/clocky/clocky.json", 'w') as config_file:
+        config_file.write(json_object)
+
+with open("$HOME/.config/clocky/clocky.json", 'r') as config_file:
+        configs = json.load(config_file)
+
+
 with open(timecard_file, 'r') as f:
     data = json.load(f)
 with open(timelog_file, 'r') as arch:
