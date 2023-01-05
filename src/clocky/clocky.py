@@ -1,6 +1,6 @@
 #<--------------------- Dependencies --------------------------->
 import argparse
-from __init__ import timecard_file, timelog_file, default_break, target_hours, target_days, include_break
+# from __init__ import timecard_file, timelog_file, default_break, target_hours, target_days, include_break
 import json
 import datetime
 import copy
@@ -34,6 +34,9 @@ if os.path.exists(timelog_file) == False: #Checks for timelog_file
 
 #<---------------------- Variables ----------------------------->
 
+
+""" load in settings"""
+# if file does not exist, create it.
 if os.path.exists("$HOME/.config/clocky/clocky.json") == False:
     default_configs = {
         "timecard": "$HOME/.local/share/clocky/timecard.json",
@@ -46,9 +49,19 @@ if os.path.exists("$HOME/.config/clocky/clocky.json") == False:
     json_object = json.dumps(default_configs, indent=4)
     with open("$HOME/.config/clocky/clocky.json", 'w') as config_file:
         config_file.write(json_object)
+    del default_configs
 
+# load in settings
 with open("$HOME/.config/clocky/clocky.json", 'r') as config_file:
         configs = json.load(config_file)
+
+# "unpack" configs dict
+timecard_file = configs["timecard"]
+timelog_file = configs["timelog"]
+default_break = configs["default_break"]
+include_break = configs["include_break"]
+target_hours = configs["target_hours"]
+target_days = configs["target_days"]
 
 
 with open(timecard_file, 'r') as f:
