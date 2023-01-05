@@ -13,34 +13,34 @@ from colorama import Fore, init
 init(autoreset=True)
 
 
+#<---------------------- Variables ----------------------------->
+
 try:
     __version__ = f"clocky {importlib.metadata.version('clocky')}"
 except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
+home = os.path.expanduser("~")
 
 """ load in settings"""
 # if file does not exist, create it.
-if os.path.exists("$HOME/.config/clocky/clocky.json") == False:
+if os.path.exists(f"{home}/.config/clocky/clocky.json") == False:
     default_configs = {
-        "timecard": "$HOME/.local/share/clocky/timecard.json",
-        "timelog": "$HOME/.local/share/clocky/timelog.json",
+        "timecard": "~/.local/share/clocky/timecard.json",
+        "timelog": "~/.local/share/clocky/timelog.json",
         "include_break": False,
         "default_break": 30,
         "target_hours": 8,
         "target_days": 5
     }
     json_object = json.dumps(default_configs, indent=4)
-    with open("$HOME/.config/clocky/clocky.json", 'w') as config_file:
+    with open(f"{home}/.config/clocky/clocky.json", 'w+') as config_file:
         config_file.write(json_object)
     print("\n\tWelcome to Clocky! Settings are located at '~/.config/clocky/clocky.json'")
     del default_configs
 
-    
-#<---------------------- Variables ----------------------------->
-
 # load in settings
-with open("$HOME/.config/clocky/clocky.json", 'r') as config_file:
+with open(f"{home}/.config/clocky/clocky.json", 'r') as config_file:
         configs = json.load(config_file)
 
 # "unpack" configs dict
@@ -50,6 +50,12 @@ default_break = configs["default_break"]
 include_break = configs["include_break"]
 target_hours = configs["target_hours"]
 target_days = configs["target_days"]
+
+if timecard_file[0] == "~":
+    timecard_file = os.path.expanduser(timecard_file)
+
+if timelog_file[0] == "~":
+    timelog_file = os.path.expanduser(timelog_file)
 
 
 with open(timecard_file, 'r') as f:
