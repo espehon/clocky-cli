@@ -18,22 +18,6 @@ try:
 except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
-if os.path.exists(timecard_file) == False: #Checks for timecard_file
-    if timecard_file == "tutorial":
-        print("\n\nWelcome to Clocky!\n\nTo begin, please open the clocky folder where ever you have this program installed.\n[Optional] Next, move the timecard.json and timelog.txt files to an easy access location like '~/.local/share/clocky/'.\nFinaly, open and update the __init__.py file so that timecard_file and timelog_file are set to the full path of the corresponding files.\n\nUse 'clocky -?' once done.\n")
-    else:
-        print(Fore.YELLOW + 'File: ' + timecard_file + " does not exist!\nPlease go to " + os.path.dirname(os.path.abspath(__file__)) + " and update __init__.py with correct file paths.")
-    sys.exit(0)
-
-if os.path.exists(timelog_file) == False: #Checks for timelog_file
-    if timelog_file == "tutorial":
-        print("\n\nWelcome to Clocky!\n\nTo begin, please open the clocky folder where ever you have this program installed.\n[Optional] Next, move the timecard.json and timelog.txt files to an easy access location like '~/.local/share/clocky/'.\nFinaly, open and update the __init__.py file so that timecard_file and timelog_file are set to the full path of the corresponding files.\n\nUse 'clocky -?' once done.\n")
-    else:
-        print(Fore.YELLOW + timelog_file + " does not exist!\nPlease go to " + os.path.dirname(os.path.abspath(__file__)) + " and update __init__.py with correct file paths.")
-    sys.exit(0)
-
-#<---------------------- Variables ----------------------------->
-
 
 """ load in settings"""
 # if file does not exist, create it.
@@ -49,7 +33,11 @@ if os.path.exists("$HOME/.config/clocky/clocky.json") == False:
     json_object = json.dumps(default_configs, indent=4)
     with open("$HOME/.config/clocky/clocky.json", 'w') as config_file:
         config_file.write(json_object)
+    print("\n\tWelcome to Clocky! Settings are located at '~/.config/clocky/clocky.json'")
     del default_configs
+
+    
+#<---------------------- Variables ----------------------------->
 
 # load in settings
 with open("$HOME/.config/clocky/clocky.json", 'r') as config_file:
