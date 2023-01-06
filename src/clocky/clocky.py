@@ -21,8 +21,13 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
 home = os.path.expanduser("~")
+config_path = os.path.expanduser("~/.config/clocky/")
 
 """ load in settings"""
+# if path does not exist, create it.
+if os.path.exists(config_path) == False:
+    os.makedirs(config_path)
+
 # if file does not exist, create it.
 if os.path.exists(f"{home}/.config/clocky/clocky.json") == False:
     default_configs = {
