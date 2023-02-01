@@ -2,6 +2,7 @@
 import argparse
 # from __init__ import timecard_file, timelog_file, default_break, target_hours, target_days, include_break
 import json
+from configparser import ConfigParser
 import datetime
 import copy
 import time
@@ -15,46 +16,76 @@ init(autoreset=True)
 
 #<---------------------- Variables ----------------------------->
 
+# Set __version__
 try:
     __version__ = f"clocky {importlib.metadata.version('clocky')}"
 except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
+# Set user paths
 home = os.path.expanduser("~")
 config_path = os.path.expanduser("~/.config/clocky/")
+config_file = f"{config_path}clocky.ini"
 
 """ load in settings"""
+config = ConfigParser()
+
 # if path does not exist, create it.
 if os.path.exists(config_path) == False:
     os.makedirs(config_path)
 
 # if file does not exist, create it.
-if os.path.exists(f"{home}/.config/clocky/clocky.json") == False:
-    default_configs = {
-        "timecard": "~/.local/share/clocky/timecard.json",
-        "timelog": "~/.local/share/clocky/timelog.json",
-        "include_break": False,
-        "default_break": 30,
-        "target_hours": 8,
-        "target_days": 5
-    }
-    json_object = json.dumps(default_configs, indent=4)
-    with open(f"{home}/.config/clocky/clocky.json", 'w+') as config_file:
-        config_file.write(json_object)
-    print("\n\tWelcome to Clocky! Settings are located at '~/.config/clocky/clocky.json'")
-    del default_configs
+if os.path.exists(config_file) == False:
+    # default_configs = {
+    #     "timecard": "~/.local/share/clocky/timecard.json",
+    #     "timelog": "~/.local/share/clocky/timelog.json",
+    #     "include_break": False,
+    #     "default_break": 30,
+    #     "target_hours": 8,
+    #     "target_days": 5
+    # }
+    default_configs = """\
+    [Settings]
+    #
+    timecard = ~/.local/share/clocky/timecard.json
 
+    #
+    timelog = ~/.local/share/clocky/timelog.json
+
+    #
+    include_break = False
+
+    #
+    default_break = 30
+
+    #
+    target_hours = 8
+
+    #
+    target_days = 5
+    """
+    # json_object = json.dumps(default_configs, indent=4)
+    # with open(f"{home}/.config/clocky/clocky.json", 'w+') as config_file:
+    #     config_file.write(json_object)
+    # print("\n\tWelcome to Clocky! Settings are located at '~/.config/clocky/clocky.json'")
+    # del default_configs
+    with open(config_file, 'w') as settingsFile:
+        settingsFile.write(default_configs)
+    
 # load in settings
-with open(f"{home}/.config/clocky/clocky.json", 'r') as config_file:
-        configs = json.load(config_file)
+try:
+    config.read(config_file)
+except:
+    print("Reading config file failed!")
+    sys.exit(1)
 
 # "unpack" configs dict
-timecard_file = configs["timecard"]
-timelog_file = configs["timelog"]
-default_break = configs["default_break"]
-include_break = configs["include_break"]
-target_hours = configs["target_hours"]
-target_days = configs["target_days"]
+timecard_file = config["Settings"]["timecard"]
+timelog_file =  config["Settings"]["timelog"]
+default_break = config["Settings"]["default_break"]
+include_break = config["Settings"]["include_break"]
+target_hours =  config["Settings"]["target_hours"]
+target_days =   config["Settings"]["target_days"]
 
 if timecard_file[0] == "~":
     timecard_file = os.path.expanduser(timecard_file)
