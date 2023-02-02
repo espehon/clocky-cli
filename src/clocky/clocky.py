@@ -36,39 +36,23 @@ if os.path.exists(config_path) == False:
 
 # if file does not exist, create it.
 if os.path.exists(config_file) == False:
-    # default_configs = {
-    #     "timecard": "~/.local/share/clocky/timecard.json",
-    #     "timelog": "~/.local/share/clocky/timelog.json",
-    #     "include_break": False,
-    #     "default_break": 30,
-    #     "target_hours": 8,
-    #     "target_days": 5
-    # }
     default_configs = """\
-    [Settings]
-    #
-    timecard = ~/.local/share/clocky/timecard.json
+[Settings]
+#
+recordsFolder = ~/.local/share/clocky/
 
-    #
-    timelog = ~/.local/share/clocky/timelog.json
+#
+include_break = False
 
-    #
-    include_break = False
+#
+default_break = 30
 
-    #
-    default_break = 30
+#
+target_hours = 8
 
-    #
-    target_hours = 8
-
-    #
-    target_days = 5
-    """
-    # json_object = json.dumps(default_configs, indent=4)
-    # with open(f"{home}/.config/clocky/clocky.json", 'w+') as config_file:
-    #     config_file.write(json_object)
-    # print("\n\tWelcome to Clocky! Settings are located at '~/.config/clocky/clocky.json'")
-    # del default_configs
+#
+target_days = 5
+"""
     with open(config_file, 'w') as settingsFile:
         settingsFile.write(default_configs)
     
@@ -80,18 +64,28 @@ except:
     sys.exit(1)
 
 # "unpack" configs dict
-timecard_file = config["Settings"]["timecard"]
-timelog_file =  config["Settings"]["timelog"]
-default_break = config["Settings"]["default_break"]
-include_break = config["Settings"]["include_break"]
-target_hours =  config["Settings"]["target_hours"]
-target_days =   config["Settings"]["target_days"]
+recordsFolder = os.path.expanduser(config["Settings"]["recordsFolder"])
+timecard_file = recordsFolder + "timecard.json"
+timelog_file =  recordsFolder + "timelog.json"
+default_break = int(config["Settings"]["default_break"])
+include_break = bool(config["Settings"]["include_break"])
+target_hours =  int(config["Settings"]["target_hours"])
+target_days =   int(config["Settings"]["target_days"])
+
+if not os.path.exists(recordsFolder):   # trying 'not logical' syntax here just to see if I like it more than 'logical is false'
+    os.makedirs(recordsFolder)
 
 if timecard_file[0] == "~":
     timecard_file = os.path.expanduser(timecard_file)
+if os.path.exists(timecard_file) == False:
+    with open(timecard_file, 'w') as file:
+        file.write(r'{"2022-11-06": {"hrs": 0, "time": "None"}}')
 
 if timelog_file[0] == "~":
     timelog_file = os.path.expanduser(timelog_file)
+if os.path.exists(timelog_file) == False:
+    with open(timelog_file, 'w') as file:
+        pass
 
 
 with open(timecard_file, 'r') as f:
