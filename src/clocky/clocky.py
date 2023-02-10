@@ -372,7 +372,7 @@ def show_minutes():
     numHashes = int((temp_data[todays_date]['hrs'] * 60) / minPerHash) # gets hours worked and coverts to minutes then scales to fit width
     bar = '['
     for char in range(1, numHashes):
-        bar = bar + (f'{color_codes[colour_scale(char, (width))]}' + "#" + {color_codes['reset']})
+        bar = bar + (f'{color_codes[colour_scale(char, (width))]}' + "#" + {color_codes['none']})
     bar = bar + ("-" * (width - numHashes)) + "]"
     if debug == True:
         paint("        minPerHash = " + str(minPerHash))
@@ -577,9 +577,9 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
             time.sleep(0.005)
 
     elif g == False and c == True: # -c
-        headline = f"{color_codes['light_black']}-----{color_codes['reset']}"
+        headline = f"{color_codes['light_black']}-----{color_codes['none']}"
         for char in range(1, 51):
-            headline = headline + f'{color_codes[colour_scale(char, (target_hours*4))]}-{color_codes["reset"]}'
+            headline = headline + f'{color_codes[colour_scale(char, (target_hours*4))]}-{color_codes["none"]}'
         print(headline)
         for day in head:
             try:
@@ -600,7 +600,7 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
     elif g == True and c == True: # -gc
         new_headline = "     "
         for ch in range(0, len(headline)):
-            new_headline = new_headline + (f'{color_codes[colour_scale(ch, (target_hours*4))]}' + headline[ch] + f'{color_codes["reset"]}')
+            new_headline = new_headline + (f'{color_codes[colour_scale(ch, (target_hours*4))]}' + headline[ch] + f'{color_codes["none"]}')
         print(new_headline)
         for day in head:
             try:
@@ -817,10 +817,10 @@ def demo():#prints a demo
     time.sleep(0.25)
     print("┃")
     time.sleep(0.25)
-    output = f"┃ Scale{color_codes['light_black']}[{color_codes['reset']}"
+    output = f"┃ Scale{color_codes['light_black']}[{color_codes['none']}"
     for char in range(1, 49):
-        output = output + (f'{color_codes[colour_scale(char, cust_hrs)]}' + "=" + f'{color_codes["reset"]}')
-    output = output + f'{color_codes["red"]}]{color_codes["reset"]}'
+        output = output + (f'{color_codes[colour_scale(char, cust_hrs)]}' + "=" + f'{color_codes["none"]}')
+    output = output + f'{color_codes["red"]}]{color_codes["none"]}'
     print(output)
     time.sleep(0.25)
     print("┃" + " "*38 + paint("↑", color="light_green", r=True))
