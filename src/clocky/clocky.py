@@ -662,6 +662,7 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
                 sys.stdout.flush()
             time.sleep(0.005)
 
+# TODO #12 Color scale reorder
 def colour_scale(number, custom=False): #Returns colour based on input hours
     if custom == False:
         number = number/target_hours
