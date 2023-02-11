@@ -38,19 +38,20 @@ if os.path.exists(config_path) == False:
 if os.path.exists(config_file) == False:
     default_configs = """\
 [Settings]
-#
+
+# Location where data files are stored.
 recordsFolder = ~/.local/share/clocky/
 
-#
+# If set to True, time on break is included as time worked.
 include_break = False
 
-#
+# Default number of minutes to be used with --break.
 default_break = 30
 
-#
+# Number of hours that should be worked in a day.
 target_hours = 8
 
-#
+# Number of days that should be worked in a week.
 target_days = 5
 """
     with open(config_file, 'w') as settingsFile:
@@ -66,9 +67,9 @@ except:
 # "unpack" configs dict
 recordsFolder = os.path.expanduser(config["Settings"]["recordsFolder"])
 timecard_file = recordsFolder + "timecard.json"
-timelog_file =  recordsFolder + "timelog.json"
+timelog_file =  recordsFolder + "timelog.txt"
 default_break = int(config["Settings"]["default_break"])
-include_break = bool(config["Settings"]["include_break"])
+include_break = config.getboolean("Settings", "include_break")
 target_hours =  int(config["Settings"]["target_hours"])
 target_days =   int(config["Settings"]["target_days"])
 
@@ -125,7 +126,7 @@ parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='Pr
 
 cli.add_argument('-v', '--version', action='version', version='%(prog)s {version}'.format(version=__version__))
 
-cli.add_argument('-m', dest='minutes', action='store_true', help='Show minutes remaining.')
+# cli.add_argument('-m', dest='minutes', action='store_true', help='Show minutes remaining.')
 
 cli.add_argument('-i', '--in', dest='in_flag', action='store_true', help='Clock in.')
 
@@ -145,6 +146,7 @@ cli.add_argument('-c', '--chart', metavar='N', action='append', type=int, nargs=
 
 cli.add_argument('-gc', '-cg', metavar='N', action='append', type=int, nargs='?', const=0, help='Combines graph and chart for [N]th week ago. (default: 0)')
 
+#TODO #11 : Should print a bar chart for hrs worked for N days/weeks.
 cli.add_argument('-h', '--hist', metavar=('I', 'N'), action='append', nargs='+', help='Chart history for last [N] [I]ntervals. (D=days W=weeks)')
 
 cli.add_argument('--demo', dest='demo', action='store_true', help=argparse.SUPPRESS)
@@ -163,6 +165,10 @@ def print_vars(): #Prints variables for --debug
     paint("    debug             = " + str(debug))
     paint("    timecard_file     = " + timecard_file)
     paint("    timelog_file      = " + timelog_file)
+    paint("    default_break     = " + str(default_break))
+    paint("    include_break     = " + str(include_break))
+    paint("    target_hours      = " + str(target_hours))
+    paint("    target_days       = " + str(target_days))
     paint("    todays_date       = " + todays_date)
     paint("    current_time      = " + current_time)
     try:
@@ -251,16 +257,20 @@ def clock_in(): #Replaces todays time stamp with current_time.
         paint("\n[" + current_time + "] You are now clocked in.", color='light_cyan')
         if first_punch == True:
             if include_break == True:
+                # Number of characters to subtract from the length of the frame due to color codes that won't literally be printed on the console.
+                num_hidden_chars = 52
                 target_time = datetime.datetime.now() + datetime.timedelta(hours=target_hours)
                 target_time = target_time.strftime("%H:%M")
                 output = paint('│ Working to ', color='cyan', r=True) + paint(str(target_time), color='light_magenta', r=True) + paint(' will put you at ', color='cyan', r=True) + paint(str(target_hours), color='light_green', r=True) + paint(' hours │', color='cyan', r=True)
-                output = paint('┌' + ('─'*(len(output)-51)) + '┐\n', color='cyan', r=True) + output + paint('\n└' + ('─'*(len(output)-51)) + '┘', color='cyan', r=True)
+                output = paint('┌' + ('─'*(len(output)-num_hidden_chars)) + '┐\n', color='cyan', r=True) + output + paint('\n└' + ('─'*(len(output)-num_hidden_chars)) + '┘', color='cyan', r=True)
                 print(output)
             else:
+                # Number of characters to subtract from the length of the frame due to color codes that won't literally be printed on the console.
+                num_hidden_chars = 72
                 target_time = datetime.datetime.now() + datetime.timedelta(minutes=default_break) + datetime.timedelta(hours=target_hours)
                 target_time = target_time.strftime("%H:%M")
                 output = paint('│ Working to ', color='cyan', r=True) + paint(str(target_time), color='light_magenta', r=True) + paint(' with a ', color='cyan', r=True) + paint(str(default_break), color='light_green', r=True) + paint(' minute break will put you at ', color='cyan', r=True) + paint(str(target_hours), color='light_green', r=True) + paint(' hours │', color='cyan', r=True)
-                output = paint('┌' + ('─'*(len(output)-71)) + '┐\n', color='cyan', r=True) + output + paint('\n└' + ('─'*(len(output)-71)) + '┘', color='cyan', r=True)
+                output = paint('┌' + ('─'*(len(output)-num_hidden_chars)) + '┐\n', color='cyan', r=True) + output + paint('\n└' + ('─'*(len(output)-num_hidden_chars)) + '┘', color='cyan', r=True)
                 print(output)
     else:
         paint("\nYou are already clocked in.", color='light_red')
@@ -841,7 +851,7 @@ def clocky(argv=None):
     def print_args(): #prints argparse values for --debug
         paint("    --------Argument Values---------")
         paint("    args.debug          " + str(args.debug))
-        paint("    args.minutes        " + str(args.minutes))
+        # paint("    args.minutes        " + str(args.minutes))
         paint("    args.in_flag        " + str(args.in_flag))
         paint("    args.out_flag       " + str(args.out_flag))
         paint("    args.toggle_flag    " + str(args.toggle_flag))
@@ -867,12 +877,12 @@ def clocky(argv=None):
     if today_exists() == False: #Add today's entry if none
         create_entry()
     
-    if args.minutes == True: #clocky -m
-        if args.debug == True:
-            paint("\n    Argument -m passed...")
-        show_minutes()
+    # if args.minutes == True: #clocky -m
+    #     if args.debug == True:
+    #         paint("\n    Argument -m passed...")
+    #     show_minutes()
 
-    elif args.in_flag == True: #clocky -i
+    if args.in_flag == True: #clocky -i
         if args.debug == True:
             paint("\n    Argument --in passed...")
         clock_in()
