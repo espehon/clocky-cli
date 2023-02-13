@@ -53,6 +53,9 @@ target_hours = 8
 
 # Number of days that should be worked in a week.
 target_days = 5
+
+# Color scale order is defined here. 
+color_order = light_black,white,light_white,
 """
     with open(config_file, 'w') as settingsFile:
         settingsFile.write(default_configs)
