@@ -54,8 +54,8 @@ target_hours = 8
 # Number of days that should be worked in a week.
 target_days = 5
 
-# Color scale order is defined here. 
-color_order = light_black,white,light_white,
+# Color scale order is defined here. 10th element (index 9) will line up with target.
+color_order = light_black,white,light_white,magenta,blue,light_blue,light_cyan,cyan,green,light_green,light_yellow,yellow,red,light_red,light_magenta
 """
     with open(config_file, 'w') as settingsFile:
         settingsFile.write(default_configs)
@@ -75,6 +75,7 @@ default_break = int(config["Settings"]["default_break"])
 include_break = config.getboolean("Settings", "include_break")
 target_hours =  int(config["Settings"]["target_hours"])
 target_days =   int(config["Settings"]["target_days"])
+color_order = config["Settings"]["color_order"].split(',')
 
 if not os.path.exists(recordsFolder):   # trying 'not logical' syntax here just to see if I like it more than 'logical is false'
     os.makedirs(recordsFolder)
@@ -672,33 +673,35 @@ def colour_scale(number, custom=False): #Returns colour based on input hours
     else:
         number = number/int(custom)
     if number < 0.125:
-        return 'light_black'
-    elif number < 0.3:
-        return 'white'
+        return color_order[0]
+    elif number < 0.25:
+        return color_order[1]
+    elif number < 0.375:
+        return color_order[2]
     elif number < 0.5:
-        return 'light_white'
-    elif number < 0.622917:
-        return 'blue'
-    elif number < 0.747917:
-        return 'light_blue'
-    elif number < 0.872917:
-        return 'light_cyan'
+        return color_order[3]
+    elif number < 0.625:
+        return color_order[4]
+    elif number < 0.75:
+        return color_order[5]
+    elif number < 0.875:
+        return color_order[6]
     elif number < 0.96875:
-        return 'cyan'
-    elif number < 0.989583:
-        return 'green'
-    elif number < 1.03125:
-        return 'light_green'
-    elif number < 1.122917:
-        return 'light_yellow'
-    elif number < 1.247917:
-        return 'yellow'
-    elif number < 1.372917:
-        return 'light_red'
+        return color_order[7]
+    elif number < 1:
+        return color_order[8]
+    elif number < 1.0625:
+        return color_order[9]
+    elif number < 1.15625:
+        return color_order[10]
+    elif number < 1.25:
+        return color_order[11]
+    elif number < 1.375:
+        return color_order[12]
     elif number < 1.5:
-        return 'magenta'
+        return color_order[13]
     else:
-        return 'red'
+        return color_order[14]
 
 def print_summary(weeks_ago): #Prints summary of N weeks ago, formatted with ascii box drawing characters
     starting_date = get_sunday()
