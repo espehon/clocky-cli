@@ -128,3 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 install.bat
+~$Color_Scale.xlsx
