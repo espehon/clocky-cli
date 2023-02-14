@@ -330,6 +330,7 @@ def take_break(M): #clocks out for M minutes, then clocks back in
             print("\n" * abs(padding_v - 8))
             for s in progressbar(range(M), "Break: ", "(pass ← wait)"):
                 time.sleep(60)
+            print("\a")
         except:
             print("\n[Progress interrupted]")
             print("\n" * padding_v)
