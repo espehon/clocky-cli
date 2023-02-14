@@ -55,7 +55,9 @@ target_hours = 8
 target_days = 5
 
 # Color scale order is defined here. 10th element (index 9) will line up with target.
-color_order = light_black,white,light_white,magenta,blue,light_blue,light_cyan,cyan,green,light_green,light_yellow,yellow,red,light_red,light_magenta
+# This must be a list of 15 colors. A copy of the default follows:
+# color_order = light_black,white,light_white,magenta,blue,light_blue,light_cyan,cyan,green,light_green,light_yellow,yellow,light_red,red,red
+color_order = light_black,white,light_white,magenta,blue,light_blue,light_cyan,cyan,green,light_green,light_yellow,yellow,light_red,red,red
 """
     with open(config_file, 'w') as settingsFile:
         settingsFile.write(default_configs)
@@ -76,6 +78,10 @@ include_break = config.getboolean("Settings", "include_break")
 target_hours =  int(config["Settings"]["target_hours"])
 target_days =   int(config["Settings"]["target_days"])
 color_order = config["Settings"]["color_order"].split(',')
+
+if len(color_order) < 15:
+    for missing in range(15 - len(color_order)):
+        color_order.append('light_black')
 
 if not os.path.exists(recordsFolder):   # trying 'not logical' syntax here just to see if I like it more than 'logical is false'
     os.makedirs(recordsFolder)
@@ -834,10 +840,10 @@ def demo():#prints a demo
     time.sleep(0.25)
     print("┃")
     time.sleep(0.25)
-    output = f"┃ Scale{color_codes['light_black']}[{color_codes['none']}"
+    output = f"┃ Scale{color_codes[color_order[0]]}[{color_codes['none']}"
     for char in range(1, 49):
         output = output + (f'{color_codes[colour_scale(char, cust_hrs)]}' + "=" + f'{color_codes["none"]}')
-    output = output + f'{color_codes["red"]}]{color_codes["none"]}'
+    output = output + f'{color_codes[color_order[14]]}]{color_codes["none"]}'
     print(output)
     time.sleep(0.25)
     print("┃" + " "*38 + paint("↑", color="light_green", r=True))
