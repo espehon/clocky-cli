@@ -545,7 +545,7 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
         padding = " " * 24
     head = ['Sun ', 'Mon ', 'Tue ', 'Wed ', 'Thu ', 'Fri ', 'Sat ']
     print("\n\n\n" + padding + "<<< " + title + " for pay period ending " + str(starting_date - datetime.timedelta(days = (7 * weeks_ago) - 6)) + " >>>")
-    headline = "0---1---2---3---4---5---6---7---8---9---X---E---D---1---2---3---4---5---6---7---8---9---X---E---"
+    headline = "0---1---2---3---4---5---6---7---8---9---X---E---N---1---2---3---4---5---6---7---8---9---X---E---"
     data_temp = copy.deepcopy(data) #Clones 'data' to keep it unchanged
     if data_temp[todays_date]['time'] == "None":
         hrs = 0
@@ -559,7 +559,8 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
         for day in head:
             try:
                 colour = colour_scale(data_temp[str(starting_date - offset)]['hrs'])
-                hrs_list.append(data_temp[str(starting_date - offset)]['hrs'])
+                if data_temp[str(starting_date - offset)]['hrs'] != 0:
+                    hrs_list.append(data_temp[str(starting_date - offset)]['hrs'])
             except:
                 colour = 'light_black'
             paint(day + graph(str(starting_date - offset)), colour)
@@ -567,16 +568,15 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
             count += 1
             time.sleep(0.02)
         average = sum(hrs_list)/len(hrs_list)
-        paint("[Average : " + str(round(average, 2)) + "]", color=colour_scale(average), r=True)
+        paint("    [Average : " + str(round(average, 2)) + "]", color=colour_scale(average))
         blocks = round(sum(hrs_list)*4)
         output = "\r" + (" "*(48-(int(rounded_target_hours*4))))
         day_count = 1
         carriage = 0
-        print()
         for block in range(1, (blocks + 1)):
-            output = output + paint(" ■", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+            output = output + paint(" ■", color=colour_scale(block, custom=(rounded_target_hours*target_days*4)), r=True)
             if block == blocks:
-                output = output + paint(" [Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+                output = output + paint(" [Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(block, custom=(rounded_target_hours*target_days*4)), r=True)
                 sys.stdout.write(output)
                 sys.stdout.flush()
                 print("\n")
@@ -647,9 +647,9 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
         line_1 = True
         carriage_limit = (int(96/(rounded_target_hours*4))*rounded_target_hours*4)
         for block in range(1, (blocks + 1)):
-            output = output + paint("■", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+            output = output + paint("■", color=colour_scale(block, custom=(rounded_target_hours*target_days*4)), r=True)
             if block == blocks:
-                output = output + paint(" [Total : " + str(round(sum(hrs_list), 2)) + " Hrs]", color=colour_scale(block, custom=(rounded_target_hours*20)), r=True)
+                output = output + paint(" [Total : " + str(round(sum(hrs_list), 2)) + " Hrs]", color=colour_scale(block, custom=(rounded_target_hours*target_days*4)), r=True)
                 sys.stdout.write(output)
                 sys.stdout.flush()
                 print()
