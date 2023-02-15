@@ -18,7 +18,7 @@ init(autoreset=True)
 
 # Set __version__
 try:
-    __version__ = f"clocky {importlib.metadata.version('clocky')}"
+    __version__ = f"clocky {importlib.metadata.version('clocky-cli')}"
 except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
@@ -284,7 +284,7 @@ def clock_in(): #Replaces todays time stamp with current_time.
                 print(output)
     else:
         paint("\nYou are already clocked in.", color='light_red')
-        print(last_timestamp())
+        print("Last entry: " + last_timestamp())
 
 def get_hrs(first_T, second_T): #Finds the number of hours between 2 times (second_T chronologically after first_T).
     T1 = datetime.datetime.strptime(first_T, '%H:%M')
@@ -310,7 +310,7 @@ def clock_out(): #Finds the difference between the last time stamp and current_t
         print("You were clocked in for " + str(hrs) + " hours.")
     else:
         paint("\nYou are not clocked in.", color='light_red')
-        print(last_timestamp())
+        print("Last entry: " + last_timestamp())
 
 def take_break(M): #clocks out for M minutes, then clocks back in
     padding_v = int((os.get_terminal_size()[1] / 3)) # <-- Divide the console vertically by 1 / X
@@ -341,7 +341,7 @@ def take_break(M): #clocks out for M minutes, then clocks back in
         clock_in()
     else:
         print("\nYou are not clocked in.")
-        print(last_timestamp())
+        print("Last entry: " + last_timestamp())
 
 def update_timecard(): #writes the new data stored in memory to file.
     with open(timecard_file, 'w') as tc:
