@@ -40,7 +40,7 @@ options:
   -g [N], --graph [N]       Print graphical summary for [N]th week ago. (default: 0)
   -c [N], --chart [N]       Print chart summary for [N]th week ago. (default: 0)
   -gc [N], -cg [N]          Combines graph and chart for [N]th week ago. (default: 0)
-  -h I [N], --hist I [N]    Chart history for last [N] [I]ntervals. (D=days W=weeks)
+  -h I [N], --hist I [N]    Chart history for last [N] [I]ntervals. (D=days W=weeks)  ← Not yet implemented 
   --edit [D]                Edit timecard for [D]ate. (YYYY-MM-DD)
 
 Try 'clocky --demo' for demonstrations.
