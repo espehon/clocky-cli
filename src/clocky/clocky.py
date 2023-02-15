@@ -194,10 +194,13 @@ def clear():
         _ = os.system('clear')
 
 
-def paint(text="", color="blue", r=False): # colorama Fore colorizing 
+def paint(text="", color="blue", r=False, newline=True): # colorama Fore colorizing 
     output = f'{color_codes[color]}{text}{color_codes["none"]}'
     if r == False:
-        print(output)
+        if newline is True:
+            print(output)
+        else:
+            print(output, end="")
     else:
         return output
 
@@ -614,8 +617,8 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
             time.sleep(0.01)
         print()
         average = sum(hrs_list)/len(hrs_list)
-        paint("Avg [" + "#"*round(average*4) + "]    " + str(round(average, 2)) + " Hours", color=colour_scale(average))
-        paint("[Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(sum(hrs_list), custom=(target_hours*5)), r=True)
+        paint("Avg [" + "#"*round(average*4) + "]    " + str(round(average, 2)) + " Hours ", color=colour_scale(average), newline=False)
+        paint("[Total : " + str(round(sum(hrs_list), 2)) + "]", color=colour_scale(sum(hrs_list), custom=(target_hours*target_days)))
         print()
 
     elif g == True and c == True: # -gc
