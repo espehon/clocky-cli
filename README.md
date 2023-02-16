@@ -53,6 +53,17 @@ options:
 
 Try 'clocky --demo' for demonstrations.
 ```
+# Example Images
+
+<img src="https://raw.githubusercontent.com/espehon/clocky-cli/main/docs/images/statusDemo.png"/>
+<img src="https://raw.githubusercontent.com/espehon/clocky-cli/main/docs/images/logDemo.png"/>
+<img src="https://raw.githubusercontent.com/espehon/clocky-cli/main/docs/images/summaryDemo.png"/>
+<img src="https://raw.githubusercontent.com/espehon/clocky-cli/main/docs/images/chartDemo.png"/>
+<img src="https://raw.githubusercontent.com/espehon/clocky-cli/main/docs/images/graphDemo.png"/>
+
+
+
+
 # Issues
 - Be very careful about adding a `clocky -i` to your shell's profile. Sometimes shell profiles are reloaded which will cause unwanted punches. I experienced this firsthand in PowerShell: Took me way too long to debug. It's better to add `clocky -i` to a startup script that you run manually.
 
