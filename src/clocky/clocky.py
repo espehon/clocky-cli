@@ -30,13 +30,7 @@ config_file = f"{config_path}clocky.ini"
 """ load in settings"""
 config = ConfigParser()
 
-# if path does not exist, create it.
-if os.path.exists(config_path) == False:
-    os.makedirs(config_path)
-
-# if file does not exist, create it.
-if os.path.exists(config_file) == False:
-    default_configs = """\
+default_configs = """\
 [Settings]
 
 # Location where data files are stored.
@@ -59,25 +53,42 @@ target_days = 5
 # color_order = light_black,white,light_white,magenta,blue,light_blue,light_cyan,cyan,green,light_green,light_yellow,yellow,light_red,red,red
 color_order = light_black,white,light_white,magenta,blue,light_blue,light_cyan,cyan,green,light_green,light_yellow,yellow,light_red,red,red
 """
+
+# if path does not exist, create it.
+if os.path.exists(config_path) == False:
+    os.makedirs(config_path)
+
+# if file does not exist, create it.
+if os.path.exists(config_file) == False:
     with open(config_file, 'w') as settingsFile:
         settingsFile.write(default_configs)
-    
+
+config_error = f"""{Fore.YELLOW}Please go to {config_file}
+and compare to the following:
+{Fore.LIGHTWHITE_EX}{default_configs}\n"""
+
 # load in settings
 try:
     config.read(config_file)
 except:
-    print("Reading config file failed!")
+    print(f"{Fore.RED}FATAL: Reading config file failed!")
+    print(config_error)
     sys.exit(1)
 
 # "unpack" configs dict
-recordsFolder = os.path.expanduser(config["Settings"]["recordsFolder"])
-timecard_file = recordsFolder + "timecard.json"
-timelog_file =  recordsFolder + "timelog.txt"
-default_break = int(config["Settings"]["default_break"])
-include_break = config.getboolean("Settings", "include_break")
-target_hours =  int(config["Settings"]["target_hours"])
-target_days =   int(config["Settings"]["target_days"])
-color_order = config["Settings"]["color_order"].split(',')
+try:
+    recordsFolder = os.path.expanduser(config["Settings"]["recordsFolder"])
+    timecard_file = recordsFolder + "timecard.json"
+    timelog_file =  recordsFolder + "timelog.txt"
+    default_break = int(config["Settings"]["default_break"])
+    include_break = config.getboolean("Settings", "include_break")
+    target_hours =  int(config["Settings"]["target_hours"])
+    target_days =   int(config["Settings"]["target_days"])
+    color_order = config["Settings"]["color_order"].split(',')
+except:
+    print(f"{Fore.RED}FATAL: Missing values in clocky.ini!")
+    print(config_error)
+    sys.exit(1)
 
 if len(color_order) < 15:
     for missing in range(15 - len(color_order)):
