@@ -1,6 +1,6 @@
 
 <p align="center">
-<a href="pip install clocky-cli">
+<a href="https://pypi.org/project/clocky-cli/">
 <img align="center" src="https://raw.githubusercontent.com/espehon/clocky-cli/main/docs/images/firstClock.png"/>
 </a>
 </p>
