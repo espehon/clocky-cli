@@ -7,6 +7,8 @@
 
 # clocky
 CLI for tracking hours worked
+<br><br>
+This was the first "installable" package I ever made. The code is very messy. It was originally used with easy install and I have used it for every work day since its conception. This is a great little program for keeping record of your punches in the event your company's system fails or you forget to punch-out at the end of the day. I have decided to publish the code and refactor it to be installable with pip.
 
 
 # Install
@@ -17,7 +19,13 @@ pip install clocky-cli
 
 
 # Features
-- 
+- clocking in and out
+- break timer that auto clocks back in
+- output punches from timelog (similar to `tail` on Linux)
+- output timecard for a given week
+- various charts
+- edit dates if you forget a punch
+
 
 
 # Usage
@@ -45,6 +53,11 @@ options:
 
 Try 'clocky --demo' for demonstrations.
 ```
+# Issues
+- Be very careful about adding a `clocky -i` to your shell's profile. Sometimes shell profiles are reloaded which will cause unwanted punches. I experienced this firsthand in PowerShell: Took me way too long to debug. It's better to add `clocky -i` to a startup script that you run manually.
+
+- If you are using Nerd Fonts or other fonts that support ligatures, you may experience rendering issues with some of the charts. (See Issue [#13](https://github.com/espehon/clocky-cli/issues/13))
+
 
 # Author
 
