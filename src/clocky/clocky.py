@@ -608,7 +608,8 @@ def plot(weeks_ago, g=False, c=False): #Iterates over the week, rendering graphs
         for day in head:
             try:
                 colour = colour_scale(data_temp[str(starting_date - offset)]['hrs'])
-                hrs_list.append(data_temp[str(starting_date - offset)]['hrs'])
+                if data_temp[str(starting_date - offset)]['hrs'] != 0:
+                    hrs_list.append(data_temp[str(starting_date - offset)]['hrs'])
             except:
                 colour = 'light_black'
             paint(day + chart(str(starting_date - offset)), colour)
