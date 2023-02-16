@@ -25,6 +25,7 @@ pip install clocky-cli
 - output timecard for a given week
 - various charts
 - edit dates if you forget a punch
+- configurable settings (stored at `~/.config/clocky/clocky.ini`)
 
 
 
