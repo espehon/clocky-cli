@@ -8,7 +8,7 @@
 # clocky
 CLI for tracking hours worked
 <br><br>
-This was the first "installable" package I ever made. The code is very messy. It was originally used with easy install and I have used it for every work day since its conception. This is a great little program for keeping record of your punches in the event your company's system fails or you forget to punch-out at the end of the day. I have decided to publish the code and refactor it to be installable with pip.
+This was the first "installable" package I ever made. The code is very messy. It was originally used with easy install and I have used it for work every day since its conception. This is a great little program for keeping record of your punches in the event your company's system fails or you forget to punch-out at the end of the day. I have decided to publish the code and refactor it to be installable with pip.
 
 
 # Install
