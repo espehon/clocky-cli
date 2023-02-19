@@ -24,7 +24,7 @@ classifiers = [                                       # Kinda boilerplate. Used 
 ]
 
 [project.scripts]                                     # The entrypoint for CLI app (if needed)
-clocky = "clocky.clocky:clocky"                       # SYNTAX: <commandlet> = "folder.file:function"
+clocky = "clocky_cli.clocky:clocky"                       # SYNTAX: <commandlet> = "folder.file:function"
                                                       # def main in __main__ and place in if name check
 [project.urls]
 "Homepage" = "https://github.com/espehon/clocky"              # Boilerplate links to GitHub repo
