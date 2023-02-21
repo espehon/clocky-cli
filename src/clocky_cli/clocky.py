@@ -145,7 +145,7 @@ parser.add_argument('-?', '--help', action='help', help='Show this help message 
 
 parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='Print debug information.')
 
-cli.add_argument('-v', '--version', action='version', version='%(prog)s {version}'.format(version=__version__))
+cli.add_argument('-v', '--version', action='version', version=__version__, help="Show package version and exit.")
 
 # cli.add_argument('-m', dest='minutes', action='store_true', help='Show minutes remaining.')
 
